@@ -1,0 +1,482 @@
+relational rose
+
+on delete cascade, on update cascade:: reinforce cascading effects:when forign key primary key relation is established,when a tuple is deleted from parent table, all the tuples that are concerned to, should also be deleted automatically.
+
+when dept no in department table is changed from 1 to 10 then automatically all the students concerned to dept 1, should get updated with dept_no 10
+
+
+JOINS: cross product  + some condition(inner,leftouter,right outer,fullouter)
+
+
+inner-join:
+select * from officers o,student s where o.offid=s.sid: is a join which filters from the cross product( select * from officers o,student s) based on the condition  o.offid=s.sid
+
+
+
+left-outer join:
+select * from officers left join student1 on officers.offid=student.sid;
+NOTE:same is the syntax for right outer join
+
+
+aggregate functions:
+to calculate, following predefined functions are used: count,min,max,avg,sum
+
+STRING FUNCTIONS:
+upper,lower,left,right,length
+
+NUMERIC FUNC:
+abs,round,ceiling,floor
+
+
+date,time,now,datediff
+
+
+attributes derived from predefined attributes are derived attributes which are not directly in the table,which can be derived from the given attributes in the table
+
+
+in operator:
+
+#############################     KEYWORDS   ######################
+MySQL has a comprehensive list of keywords and reserved words that are used in SQL statements. Here are some of the commonly used keywords:
+
+ADD: Adds a column in an existing table.
+ALTER: Modifies an existing database object, such as a table.
+AND: Combines two conditions.
+AS: Renames a column or table with an alias.
+BETWEEN: Selects values within a given range.
+CREATE: Creates a new database, table, index, or view.
+DELETE: Deletes rows from a table.
+DROP: Deletes a database, table, or index.
+FROM: Specifies the table to select or delete data from.
+GROUP BY: Groups rows that have the same values into summary rows.
+HAVING: Filters groups based on a condition.
+INSERT: Inserts new rows into a table.
+JOIN: Combines rows from two or more tables.
+LIKE: Searches for a specified pattern in a column.
+NOT: Negates a condition.
+OR: Combines two conditions where either condition can be true.
+ORDER BY: Sorts the result set.
+SELECT: Retrieves data from a database.
+UPDATE: Updates existing data within a table.
+WHERE: Filters rows based on a condition.
+
+###################ADD KEYWORD##################
+The ADD keyword in MySQL is primarily used in the context of modifying database tables. Here are some common use cases:
+
+
+You can add new columns to an existing table
+ALTER TABLE employees ADD COLUMN age INT;
+
+You can add indexes to improve query performance.
+ALTER TABLE employees ADD INDEX (age);
+
+You can add constraints like UNIQUE, PRIMARY KEY, or FOREIGN KEY.
+ALTER TABLE employees ADD CONSTRAINT unique_email UNIQUE (email);
+
+Adding Partitions:
+ALTER TABLE sales ADD PARTITION (PARTITION p4 VALUES LESS THAN (2025));
+
+################## ALTER OPERATOR ################
+The ADD keyword in MySQL is primarily used with the ALTER TABLE statement to add new columns or indexes to an existing table. Here are some common use cases:
+
+Adding a New Column:
+ALTER TABLE Employees ADD COLUMN Age INT;
+
+Adding Multiple Columns:
+ALTER TABLE Employees ADD COLUMN Address VARCHAR(255), ADD COLUMN PhoneNumber VARCHAR(15);
+
+Adding a Column with Constraints:
+ALTER TABLE Employees ADD COLUMN Email VARCHAR(100) NOT NULL UNIQUE;
+This query adds a new column named Email with NOT NULL and UNIQUE constraints to the Employees table.
+
+Adding an Index:
+ALTER TABLE Employees ADD INDEX (LastName);
+
+Adding a Primary Key:
+ALTER TABLE Employees ADD PRIMARY KEY (EmployeeID);
+
+Adding a Foreign Key:
+ALTER TABLE Orders ADD CONSTRAINT fk_customer FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID);
+AI-generated code. Review and use carefully. More info on FAQ.This query adds a foreign key constraint to the CustomerID column in the Orders table, referencing the CustomerID column in the Customers table
+
+###############ALTER OPERATOR#####################
+
+The ALTER operator in MySQL is used for various tasks related to modifying the structure of an existing table. Here are some common use cases:
+
+Adding Columns: You can add new columns to an existing table.
+ALTER TABLE table_name ADD column_name datatype;
+
+You can change the data type or other attributes of an existing column.
+ALTER TABLE table_name MODIFY COLUMN column_name new_datatype;
+
+ You can remove columns from a table.
+ALTER TABLE table_name DROP COLUMN column_name;
+
+You can rename an existing column.
+ALTER TABLE table_name RENAME COLUMN old_name TO new_name;
+
+ You can rename the entire table.
+ALTER TABLE old_table_name RENAME TO new_table_name;
+
+ You can add indexes to a table to improve query performance.
+ALTER TABLE table_name ADD INDEX index_name (column_name);
+
+Dropping Indexes: You can remove indexes from a table.
+ALTER TABLE table_name DROP INDEX index_name;
+
+You can add, drop, or reorganize partitions in a table.
+ALTER TABLE table_name ADD PARTITION (PARTITION p1 VALUES LESS THAN (1000));
+
+
+################  LIKE OPERATOR:   ################
+The LIKE operator in MySQL is used to search for a specified pattern in a column. 
+
+Finding Values That Start With a Specific Character:
+SELECT * FROM Customers WHERE CustomerName LIKE 'A%';
+
+
+Finding Values That End With a Specific Character:
+SELECT * FROM Customers WHERE CustomerName LIKE '%a';
+
+Finding Values That Contain a Specific Sequence of Characters:
+SELECT * FROM Customers WHERE CustomerName LIKE '%or%';
+
+Finding Values With a Specific Character in a Certain Position(here r in second position):
+SELECT * FROM Customers WHERE CustomerName LIKE '_r%';
+
+Finding Values With a Specific Length(start with a and are atleast 3 characters long):
+SELECT * FROM Customers WHERE CustomerName LIKE 'A__%';
+
+Case-Insensitive Search:
+SELECT * FROM Customers WHERE LOWER(CustomerName) LIKE 'a%';
+This query finds all customers whose names start with ‘a’ or ‘A’ by converting the names to lowercase before comparison.
+
+Using LIKE with UPDATE:
+UPDATE Customers SET ContactName = 'Unknown' WHERE ContactName LIKE 'A%';
+This query updates the contact name to ‘Unknown’ for all customers whose contact names start with ‘A’.
+
+Using LIKE with DELETE:
+DELETE FROM Customers WHERE CustomerName LIKE 'A%';
+This query deletes all customers whose names start with ‘A’
+
+#################################AND KEYWORD###################################
+Combining Conditions:
+SELECT * FROM employees WHERE age > 30 AND department = 'HR';
+
+Multiple Conditions in JOIN:
+SELECT * FROM employees e JOIN departments d ON e.department_id = d.department_id AND d.location = 'New York';
+
+AND in SELECT with Subquery:
+SELECT * FROM employees WHERE department = 'HR' AND id IN (SELECT employee_id FROM projects WHERE project_name = 'Project X');
+
+Combining Conditions in JOIN Clause:
+SELECT * FROM employees e JOIN departments d ON e.department_id = d.department_id AND d.location = 'New York';
+
+###############################AS KEYWORDS###################################
+Alias for Columns:
+SELECT first_name AS fname, last_name AS lname FROM employees;
+
+Alias for Tables:
+SELECT e.first_name, d.department_name FROM employees AS e JOIN departments AS d ON e.department_id = d.department_id;
+
+Alias in Subqueries:
+SELECT * FROM (SELECT first_name, last_name FROM employees) AS emp;
+
+Alias with Calculated Columns:
+SELECT salary * 12 AS annual_salary FROM employees;
+
+Alias with Concatenated Columns:
+SELECT CONCAT(first_name, ' ', last_name) AS full_name FROM employees;
+
+Alias with Aggregate Functions:
+SELECT department, COUNT(*) AS employee_count FROM employees GROUP BY department;
+
+Alias with Subqueries:
+SELECT (SELECT COUNT(*) FROM employees) AS total_employees;
+
+Alias in GROUP BY:
+SELECT department AS dept, COUNT(*) AS employee_count FROM employees GROUP BY dept;
+
+Basic Table Alias:
+SELECT e.first_name, d.department_name FROM employees AS e JOIN departments AS d ON e.department_id = d.department_id;
+
+Alias in Self-Join:
+SELECT e1.first_name AS employee, e2.first_name AS manager
+FROM employees AS e1
+JOIN employees AS e2 ON e1.manager_id = e2.id;
+
+Alias in Subqueries:
+SELECT emp.full_name FROM (SELECT CONCAT(first_name, ' ', last_name) AS full_name FROM employees) AS emp;
+
+Alias in GROUP BY:
+SELECT department AS dept, COUNT(*) AS employee_count FROM employees GROUP BY dept;
+
+Alias in ORDER BY:
+SELECT first_name AS fname FROM employees ORDER BY fname;
+
+Alias in HAVING:
+SELECT department AS dept, COUNT(*) AS employee_count FROM employees GROUP BY dept HAVING employee_count > 10;
+
+Alias in CASE Statements:
+SELECT name, 
+       CASE 
+           WHEN age > 30 THEN 'Senior'
+           ELSE 'Junior'
+       END AS position
+FROM employees;
+
+##########################BETWEEN KEYWORD###########################
+
+
+Range for Numbers:
+SELECT * FROM products WHERE price BETWEEN 10 AND 20;
+
+Range for Dates:
+SELECT * FROM orders WHERE order_date BETWEEN '2024-01-01' AND '2024-12-31';
+
+Range for Text Values:
+SELECT * FROM products WHERE product_name BETWEEN 'A' AND 'M';
+
+NOT BETWEEN:
+SELECT * FROM products WHERE price NOT BETWEEN 10 AND 20;
+
+#############################CREATE KEYWORD######################
+Create Database:
+CREATE DATABASE mydatabase;
+
+Create Table:
+CREATE TABLE employees (id INT, name VARCHAR(100), age INT);
+
+Create Index:
+CREATE INDEX idx_name ON employees (name);
+
+Create View:
+CREATE VIEW emp_view AS SELECT name, age FROM employees;
+
+Create Trigger:
+CREATE TRIGGER before_insert_emp BEFORE INSERT ON employees FOR EACH ROW SET NEW.created_at = NOW();
+
+Create Event:
+CREATE EVENT my_event ON SCHEDULE EVERY 1 DAY DO DELETE FROM logs WHERE log_date < NOW() - INTERVAL 30 DAY;
+
+################################DELETE KEYWORD#######################
+Delete Specific Records:
+DELETE FROM employees WHERE age > 60;
+
+Delete All Records:
+DELETE FROM employees;
+
+Delete with JOIN:
+DELETE e FROM employees e JOIN departments d ON e.department_id = d.department_id WHERE d.location = 'New York';
+
+Delete with LIMIT:
+DELETE FROM employees ORDER BY id LIMIT 10;
+
+#########################DROP KEYWORD############################
+Drop Database:
+DROP DATABASE mydatabase;
+
+Drop Table:
+DROP TABLE employees;
+
+Drop Index:
+DROP INDEX idx_name ON employees;
+
+Drop View:
+DROP VIEW emp_view;
+###########################FROM KEYWORD##########################
+Specify Table in Query:
+SELECT * FROM employees;
+
+Subquery in FROM:
+SELECT * FROM (SELECT name, age FROM employees) AS emp;
+
+#######################GROUP BY KEYWORD######################
+Group Results:
+SELECT department, COUNT(*) FROM employees GROUP BY department;
+
+Group with HAVING:
+SELECT department, COUNT(*) FROM employees GROUP BY department HAVING COUNT(*) > 10;
+
+Grouping by Multiple Columns-Grouping rows by multiple columns.
+SELECT Country, City, COUNT(*) FROM Customers GROUP BY Country, City;
+
+Using aggregate functions like SUM(), AVG(), MAX(), MIN(), and COUNT() with GROUP BY.
+SELECT Department, AVG(Salary) FROM Employees GROUP BY Department;
+
+Using CASE statements within GROUP BY to create custom groupings.
+SELECT 
+    CASE 
+        WHEN Age < 20 THEN 'Teen'
+        WHEN Age BETWEEN 20 AND 29 THEN 'Twenties'
+        ELSE 'Others'
+    END AS AgeGroup, COUNT(*) 
+FROM Users 
+GROUP BY AgeGroup;
+
+##########################HAVING KEYWORD############################
+Filter Grouped Results:
+SELECT department, COUNT(*) FROM employees GROUP BY department HAVING COUNT(*) > 10;
+
+HAVING with Aggregate Functions:
+SELECT department, AVG(salary) FROM employees GROUP BY department HAVING AVG(salary) > 50000;
+
+
+####################INSERT KEYWORD#########################
+Insert Single Record:
+INSERT INTO employees (id, name, age) VALUES (1, 'John Doe', 30);
+
+Insert Multiple Records:
+INSERT INTO employees (id, name, age) VALUES (2, 'Jane Doe', 25), (3, 'Jim Beam', 35);
+
+Insert with SELECT:
+INSERT INTO employees (id, name, age) SELECT id, name, age FROM new_employees;
+
+Insert Data from Another Table: Using INSERT INTO ... SELECT to copy data from one table to another.
+INSERT INTO employees_archive (first_name, last_name, hire_date)
+SELECT first_name, last_name, hire_date FROM employees WHERE hire_date < '2024-01-01';
+
+Insert Ignore: Ignoring errors for duplicate entries.
+INSERT IGNORE INTO employees (employee_id, first_name, last_name) VALUES (1, 'Bob', 'Brown');
+
+Insert on Duplicate Key Update: Updating existing records if a duplicate key is found.
+INSERT INTO employees (employee_id, first_name, last_name) VALUES (1, 'Bob', 'Brown')
+ON DUPLICATE KEY UPDATE first_name = 'Robert', last_name = 'Brown';
+
+#########################JOIN KEYWORD########################
+Inner Join:
+SELECT e.name, d.department_name FROM employees e INNER JOIN departments d ON e.department_id = d.department_id;
+
+Left Join(or Left Outer Join): Retrieves all records from the left table and the matched records from the right table. If no match is found, NULL values are returned for columns from the right table:
+SELECT e.name, d.department_name FROM employees e LEFT JOIN departments d ON e.department_id = d.department_id;
+
+Right Join(or Right Outer Join): Retrieves all records from the right table and the matched records from the left table. If no match is found, NULL values are returned for columns from the left table:
+SELECT e.name, d.department_name FROM employees e RIGHT JOIN departments d ON e.department_id = d.department_id;
+
+Full Join(or Full Outer Join): Retrieves all records when there is a match in either left or right table. If there is no match, NULL values are returned for columns from the table without a match:
+SELECT e.name, d.department_name FROM employees e FULL JOIN departments d ON e.department_id = d.department_id;
+
+Self Join: Joins a table with itself. This is useful for hierarchical data or comparing rows within the same table.
+SELECT A.EmployeeID, A.EmployeeName, B.ManagerName
+FROM Employees A, Employees B
+WHERE A.ManagerID = B.EmployeeID;
+
+Cross Join: Produces the Cartesian product of the two tables, meaning it returns all possible combinations of rows:
+SELECT Customers.CustomerName, Orders.OrderID
+FROM Customers
+CROSS JOIN Orders;
+
+#################LIKE KEYWORD##########################
+The LIKE keyword in MySQL is used to search for a specified pattern in a column. Here are some common use cases:
+
+Find rows where a column matches a specific pattern.
+SELECT * FROM employees WHERE name LIKE 'J%';
+
+
+Search for a Substring: Find rows where a column contains a specific substring:
+SELECT * FROM Products WHERE ProductName LIKE '%chocolate%';
+
+LIKE with Wildcards:
+% represents zero, one, or multiple characters.
+_ represents a single character.
+SELECT * FROM employees WHERE name LIKE '%Doe';
+
+NOT LIKE(to Exclude Patterns):
+SELECT * FROM employees WHERE name NOT LIKE 'J%';
+This query finds all users whose usernames do not start with ‘J’.
+
+Case-Insensitive Search: Perform a case-insensitive search.
+SELECT * FROM Cities WHERE CityName LIKE 'new%'
+
+Search for a Specific Length: Find rows where a column matches a pattern of a specific length.
+SELECT * FROM Orders WHERE OrderID LIKE '____5';
+This query finds all orders with a five-character OrderID ending in ‘5’.
+
+###################NOT KEYWORD#########################
+Negate Condition:
+SELECT * FROM employees WHERE NOT (age > 30);
+
+NOT IN:
+SELECT * FROM employees WHERE department NOT IN ('HR', 'Finance');
+
+########################OR KEYWORD#########################
+Combine Conditions:
+SELECT * FROM employees WHERE age > 30 OR department = 'HR';
+
+OR with Multiple Conditions:
+SELECT * FROM employees WHERE age > 30 OR department = 'HR' OR salary > 50000;
+
+#########################ORDER BY KEYWORD##########################
+The ORDER BY keyword in MySQL is used to sort the result set of a query by one or more columns.
+
+Sort Results single column(default is ascending order):
+SELECT * FROM employees ORDER BY age DESC;
+
+Sort by Multiple Columns: Sort by multiple columns, with the second column used to break ties in the first column:
+SELECT * FROM employees ORDER BY department ASC, age DESC;
+
+Sort in Descending Order: Use the DESC keyword to sort in descending order:
+SELECT * FROM Employees ORDER BY HireDate DESC;
+
+Sort by result of an Expression:
+SELECT * FROM Products ORDER BY Price * Quantity;
+
+Sort by Column Alias: Use an alias defined in the SELECT clause to sort.
+SELECT FirstName, LastName, (Salary * 12) AS AnnualSalary
+FROM Employees
+ORDER BY AnnualSalary DESC;
+
+Sort with NULL Values: Control the order of NULL values.
+SELECT * FROM Employees ORDER BY Department IS NULL, Department
+The query first sorts the rows so that all non-NULL Department values come before the NULL values
+
+Sort by Case Statement: Use a CASE statement to define custom sorting logic.
+SELECT * FROM Employees
+ORDER BY CASE
+    WHEN Department = 'Sales' THEN 1
+    WHEN Department = 'HR' THEN 2
+    ELSE 3
+END;
+
+######################SELECT KEYWORD#####################
+Select Columns:
+SELECT name, age FROM employees;
+
+Select All Columns:
+SELECT * FROM employees;
+
+Select with Subquery:
+SELECT * FROM (SELECT name, age FROM employees) AS emp;
+
+#################################UPDATE KEYWORD#############################
+used to modify existing records in a table.
+
+Update single Record:
+UPDATE employees SET age = age + 1 WHERE department = 'HR';
+
+Update Multiple Columns: Change the values of multiple columns.
+UPDATE Employees SET Salary = 55000, Department = 'HR' WHERE EmployeeID = 2;
+
+Update Using Subquery: Update a table based on values from another table.
+UPDATE Employees SET Salary = (SELECT AVG(Salary) FROM Employees WHERE Department = 'IT') WHERE Department = 'HR'
+
+Bulk Update: Perform bulk updates efficiently.
+UPDATE Orders SET Status = 'Shipped' WHERE OrderDate < '2024-01-01';
+
+Update with CASE Statement: Use a CASE statement to apply different updates based on conditions.
+UPDATE Employees
+SET Salary = CASE
+    WHEN Department = 'Sales' THEN Salary * 1.1
+    WHEN Department = 'HR' THEN Salary * 1.05
+    ELSE Salary
+END
+
+Update with JOIN(Update records in one table based on related data in another table):
+UPDATE employees e JOIN departments d ON e.department_id = d.department_id SET e.salary = e.salary * 1.1 WHERE d.location = 'New York';
+
+###########################WHERE KEYWORD###########################
+Filter Results:
+SELECT * FROM employees WHERE age > 30;
+
+WHERE with Multiple Conditions:
+SELECT * FROM employees WHERE age > 30 AND department = 'HR';
