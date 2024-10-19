@@ -1,6 +1,7 @@
 relational rose
 
-on delete cascade, on update cascade:: reinforce cascading effects:when forign key primary key relation is established,when a tuple is deleted from parent table, all the tuples that are concerned to, should also be deleted automatically.
+on delete cascade, on update cascade:: reinforce cascading effects:when forign key primary key relation is established,
+when a tuple is deleted from parent table, all the tuples that are concerned to, should also be deleted automatically.
 
 when dept no in department table is changed from 1 to 10 then automatically all the students concerned to dept 1, should get updated with dept_no 10
 
@@ -31,13 +32,10 @@ abs,round,ceiling,floor
 date,time,now,datediff
 
 
-attributes derived from predefined attributes are derived attributes which are not directly in the table,which can be derived from the given attributes in the table
 
-
-in operator:
 
 #############################     KEYWORDS   ######################
-MySQL has a comprehensive list of keywords and reserved words that are used in SQL statements. Here are some of the commonly used keywords:
+commonly used keywords:
 
 ADD: Adds a column in an existing table.
 ALTER: Modifies an existing database object, such as a table.
@@ -60,14 +58,16 @@ SELECT: Retrieves data from a database.
 UPDATE: Updates existing data within a table.
 WHERE: Filters rows based on a condition.
 
-###################ADD KEYWORD##################
-The ADD keyword in MySQL is primarily used in the context of modifying database tables. Here are some common use cases:
+SHOW TABLES;SHOW DATABASES;SHOW TABLES;SHOW TRIGGERS;
+CALL procedure_name,DROP PROCEDURE [IF EXISTS] procedure_name;
 
+###################ADD KEYWORD##################
+ modifying database tables:
 
 You can add new columns to an existing table
 ALTER TABLE employees ADD COLUMN age INT;
 
-You can add indexes to improve query performance.
+You can add indexes 
 ALTER TABLE employees ADD INDEX (age);
 
 You can add constraints like UNIQUE, PRIMARY KEY, or FOREIGN KEY.
@@ -77,63 +77,70 @@ Adding Partitions:
 ALTER TABLE sales ADD PARTITION (PARTITION p4 VALUES LESS THAN (2025));
 
 ################## ALTER OPERATOR ################
-The ADD keyword in MySQL is primarily used with the ALTER TABLE statement to add new columns or indexes to an existing table. Here are some common use cases:
+related to modifying the structure of an existing table:
 
-Adding a New Column:
-ALTER TABLE Employees ADD COLUMN Age INT;
-
-Adding Multiple Columns:
+Adding a New Columns:
+ALTER TABLE table_name ADD column_name datatype;
 ALTER TABLE Employees ADD COLUMN Address VARCHAR(255), ADD COLUMN PhoneNumber VARCHAR(15);
+ALTER TABLE table_name ADD COLUMN column_name data_type after column_name1;
+ALTER TABLE table_name ADD COLUMN column_name data_type first;  //to add column at first
 
 Adding a Column with Constraints:
 ALTER TABLE Employees ADD COLUMN Email VARCHAR(100) NOT NULL UNIQUE;
-This query adds a new column named Email with NOT NULL and UNIQUE constraints to the Employees table.
 
 Adding an Index:
 ALTER TABLE Employees ADD INDEX (LastName);
 
 Adding a Primary Key:
 ALTER TABLE Employees ADD PRIMARY KEY (EmployeeID);
+ALTER TABLE table_name ADD CONSTRAINT PRIMARY KEY(attribute);
 
 Adding a Foreign Key:
 ALTER TABLE Orders ADD CONSTRAINT fk_customer FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID);
-AI-generated code. Review and use carefully. More info on FAQ.This query adds a foreign key constraint to the CustomerID column in the Orders table, referencing the CustomerID column in the Customers table
+ALTER TABLE table_name ADD CONSTRAINT foreign_key_name FOREIGN KEY(attribute) REFERENCES parent_table_name(primary_key_attribute);
 
-###############ALTER OPERATOR#####################
+alter database database_name read only=1;
+alter database database_name read only=0;
 
-The ALTER operator in MySQL is used for various tasks related to modifying the structure of an existing table. Here are some common use cases:
-
-Adding Columns: You can add new columns to an existing table.
-ALTER TABLE table_name ADD column_name datatype;
-
-You can change the data type or other attributes of an existing column.
+Change datatype of column:
 ALTER TABLE table_name MODIFY COLUMN column_name new_datatype;
 
- You can remove columns from a table.
+Remove column:
 ALTER TABLE table_name DROP COLUMN column_name;
 
-You can rename an existing column.
+Rename column keeping datatype same:
 ALTER TABLE table_name RENAME COLUMN old_name TO new_name;
 
- You can rename the entire table.
+set default attribute:
+ALTER TABLE table_name ALTER attribute SET DEFAULT default_value_for_attribute;
+
+delete foreign key with its name:
+ALTER TABLE table_name DROP FOREIGN KEY foreign_key_name;
+
+Rename table:
 ALTER TABLE old_table_name RENAME TO new_table_name;
 
- You can add indexes to a table to improve query performance.
+You can add indexes to improve query performance.
 ALTER TABLE table_name ADD INDEX index_name (column_name);
 
-Dropping Indexes: You can remove indexes from a table.
+Dropping Indexes: 
 ALTER TABLE table_name DROP INDEX index_name;
 
 You can add, drop, or reorganize partitions in a table.
 ALTER TABLE table_name ADD PARTITION (PARTITION p1 VALUES LESS THAN (1000));
 
+Adding constraint:
+ALTER TABLE table_name ADD CONSTRAINT UNIQUE(attribute_name/column);
+ALTER TABLE table_name MODIFY attribute data_type not null;
+
+on deletion effects:
+ALTER TABLE table_name ADD CONSTRAINT foreign_key_name FOREIGN KEY (attr) REFERENCES parent_table_name(pk_attribute) ON DELETE    SET NULL/CASCADE;
 
 ################  LIKE OPERATOR:   ################
-The LIKE operator in MySQL is used to search for a specified pattern in a column. 
+search for a specified pattern in a column. 
 
 Finding Values That Start With a Specific Character:
 SELECT * FROM Customers WHERE CustomerName LIKE 'A%';
-
 
 Finding Values That End With a Specific Character:
 SELECT * FROM Customers WHERE CustomerName LIKE '%a';
@@ -153,11 +160,9 @@ This query finds all customers whose names start with ‘a’ or ‘A’ by conv
 
 Using LIKE with UPDATE:
 UPDATE Customers SET ContactName = 'Unknown' WHERE ContactName LIKE 'A%';
-This query updates the contact name to ‘Unknown’ for all customers whose contact names start with ‘A’.
 
 Using LIKE with DELETE:
 DELETE FROM Customers WHERE CustomerName LIKE 'A%';
-This query deletes all customers whose names start with ‘A’
 
 #################################AND KEYWORD###################################
 Combining Conditions:
@@ -168,9 +173,6 @@ SELECT * FROM employees e JOIN departments d ON e.department_id = d.department_i
 
 AND in SELECT with Subquery:
 SELECT * FROM employees WHERE department = 'HR' AND id IN (SELECT employee_id FROM projects WHERE project_name = 'Project X');
-
-Combining Conditions in JOIN Clause:
-SELECT * FROM employees e JOIN departments d ON e.department_id = d.department_id AND d.location = 'New York';
 
 ###############################AS KEYWORDS###################################
 Alias for Columns:
@@ -227,7 +229,6 @@ FROM employees;
 
 ##########################BETWEEN KEYWORD###########################
 
-
 Range for Numbers:
 SELECT * FROM products WHERE price BETWEEN 10 AND 20;
 
@@ -244,20 +245,35 @@ SELECT * FROM products WHERE price NOT BETWEEN 10 AND 20;
 Create Database:
 CREATE DATABASE mydatabase;
 
-Create Table:
-CREATE TABLE employees (id INT, name VARCHAR(100), age INT);
+Create Table(declaration):
+CREATE TABLE table_name (attr1 type1 NOT NULL,attr2 type2 DEFAULT default_value,attr3 type3 PRIMARY KEY AUTO INCREMENT,attr4 type4,....);
 
 Create Index:
-CREATE INDEX idx_name ON employees (name);
+CREATE INDEX index_name ON table_name(attribute);
+CREATE INDEX index_name ON table_name(attribute1,attribute2,...);   //multiindices
 
+view:virtual table based on result set of a query,can be interacted upon as if they are real tables
 Create View:
-CREATE VIEW emp_view AS SELECT name, age FROM employees;
+CREATE VIEW view_name AS SELECT (attr1,attr2..) FROM employees;
 
 Create Trigger:
-CREATE TRIGGER before_insert_emp BEFORE INSERT ON employees FOR EACH ROW SET NEW.created_at = NOW();
+CREATE TRIGGER trigger_name BEFORE/AFTER (ACTION:UPDATE/INSERT/DELETE) ON table_name FOR EACH ROW {do something};
+CREATE TRIGGER trig1 BEFORE INSERT ON employees FOR EACH ROW SET NEW.created_at = NOW();
+CREATE TRIGGER trig2 BEFORE INSERT ON employees FOR EACH ROW SET NEW.sal=OLD.sal*20;
 
 Create Event:
 CREATE EVENT my_event ON SCHEDULE EVERY 1 DAY DO DELETE FROM logs WHERE log_date < NOW() - INTERVAL 30 DAY;
+
+crearting a new table with a foreign key:(on delete cascade or on update cascade)
+CREATE TABLE table_name(attr1 val1,attr2 val2,attr3 val3......FOREIGN KEY(att3) REFERENCES parent_table_name(pk_attribute) ON {DELETE/UPDATE}    {SET NULL/CASCADE});
+
+creating a procedure(queries stored for reuse):switch delimeter,write proc,switch back delimeter:
+DELIMETER $$
+CREATE PROCEDURE proc_name(IN attr type,OUT attr type)      //with input and output
+BEGIN
+    //statements ending with;
+END $$
+DELIMETER ;
 
 ################################DELETE KEYWORD#######################
 Delete Specific Records:
@@ -321,13 +337,12 @@ SELECT department, COUNT(*) FROM employees GROUP BY department HAVING COUNT(*) >
 HAVING with Aggregate Functions:
 SELECT department, AVG(salary) FROM employees GROUP BY department HAVING AVG(salary) > 50000;
 
-
 ####################INSERT KEYWORD#########################
-Insert Single Record:
-INSERT INTO employees (id, name, age) VALUES (1, 'John Doe', 30);
+Insert Single Record://can be used to add selected values of the attributes
+INSERT INTO table_name (attr1,attr2,attr3...) VALUES (val1,val2,val3...);
 
 Insert Multiple Records:
-INSERT INTO employees (id, name, age) VALUES (2, 'Jane Doe', 25), (3, 'Jim Beam', 35);
+INSERT INTO table_name (attr1,attr2,attr3...) VALUES (val1,val2,val3...)(vala1,vala2,vala3...)(valb1,valb2,valb3...)...;
 
 Insert with SELECT:
 INSERT INTO employees (id, name, age) SELECT id, name, age FROM new_employees;
@@ -367,30 +382,25 @@ FROM Customers
 CROSS JOIN Orders;
 
 #################LIKE KEYWORD##########################
-The LIKE keyword in MySQL is used to search for a specified pattern in a column. Here are some common use cases:
+To search for a specified pattern :: % substitutes one or more characters, _ is one random letter:
 
-Find rows where a column matches a specific pattern.
-SELECT * FROM employees WHERE name LIKE 'J%';
+Find rows matching a specific pattern:
+SELECT * FROM employees WHERE attribute LIKE '_J%';
 
-
-Search for a Substring: Find rows where a column contains a specific substring:
-SELECT * FROM Products WHERE ProductName LIKE '%chocolate%';
+Search for a Substring:
+SELECT * FROM Products WHERE attribute LIKE '_chocolate%';
 
 LIKE with Wildcards:
-% represents zero, one, or multiple characters.
-_ represents a single character.
-SELECT * FROM employees WHERE name LIKE '%Doe';
+SELECT * FROM employees WHERE attribute LIKE '%Doe';
 
 NOT LIKE(to Exclude Patterns):
 SELECT * FROM employees WHERE name NOT LIKE 'J%';
-This query finds all users whose usernames do not start with ‘J’.
 
 Case-Insensitive Search: Perform a case-insensitive search.
 SELECT * FROM Cities WHERE CityName LIKE 'new%'
 
-Search for a Specific Length: Find rows where a column matches a pattern of a specific length.
-SELECT * FROM Orders WHERE OrderID LIKE '____5';
-This query finds all orders with a five-character OrderID ending in ‘5’.
+Search for a Specific Length:
+SELECT * FROM Orders WHERE OrderID LIKE '____';.
 
 ###################NOT KEYWORD#########################
 Negate Condition:
@@ -399,21 +409,14 @@ SELECT * FROM employees WHERE NOT (age > 30);
 NOT IN:
 SELECT * FROM employees WHERE department NOT IN ('HR', 'Finance');
 
-########################OR KEYWORD#########################
-Combine Conditions:
-SELECT * FROM employees WHERE age > 30 OR department = 'HR';
-
-OR with Multiple Conditions:
-SELECT * FROM employees WHERE age > 30 OR department = 'HR' OR salary > 50000;
-
 #########################ORDER BY KEYWORD##########################
 The ORDER BY keyword in MySQL is used to sort the result set of a query by one or more columns.
 
-Sort Results single column(default is ascending order):
+Sort Results (default is ascending order):
 SELECT * FROM employees ORDER BY age DESC;
 
-Sort by Multiple Columns: Sort by multiple columns, with the second column used to break ties in the first column:
-SELECT * FROM employees ORDER BY department ASC, age DESC;
+Sort by Multiple Columns: Sort by multiple with succeeding used to break ties in the preceeing columns:
+SELECT * FROM employees ORDER BY attr1 ASC, attr2 DESC, attr3 ASC;
 
 Sort in Descending Order: Use the DESC keyword to sort in descending order:
 SELECT * FROM Employees ORDER BY HireDate DESC;
@@ -439,23 +442,37 @@ ORDER BY CASE
 END;
 
 ######################SELECT KEYWORD#####################
-Select Columns:
-SELECT name, age FROM employees;
+Select selected/specific Columns:
+SELECT col1,col2,col3.. FROM employees;
+SELECT col1,col2,col3.. FROM table_name WHERE <condition>;
+SELECT * FROM table_name WHERE attribute BETWEEN value1 AND value2;
+SELECT * FROM table_name WHERE attribute in(value1,value2,value3......);
 
 Select All Columns:
 SELECT * FROM employees;
+SELECT * FROM table_name WHERE <condition>;
 
 Select with Subquery:
 SELECT * FROM (SELECT name, age FROM employees) AS emp;
+
+display a view:
+SELECT * FROM view_name;
+
+//if both tables have same number of rows
+SELECT attr1,attr2 FROM table1 UNION SELECT attr3,attr4 FROM table2;
+SELECT * FROM table1 UNION SELECT * FROM table2;
 
 #################################UPDATE KEYWORD#############################
 used to modify existing records in a table.
 
 Update single Record:
-UPDATE employees SET age = age + 1 WHERE department = 'HR';
+UPDATE employees SET attr1=val1,attr2=val2.. WHERE <condition to select row(s)>;
 
 Update Multiple Columns: Change the values of multiple columns.
 UPDATE Employees SET Salary = 55000, Department = 'HR' WHERE EmployeeID = 2;
+
+Update whole column:
+UPDATE table_name SET attribute=value;
 
 Update Using Subquery: Update a table based on values from another table.
 UPDATE Employees SET Salary = (SELECT AVG(Salary) FROM Employees WHERE Department = 'IT') WHERE Department = 'HR'
@@ -474,9 +491,3 @@ END
 Update with JOIN(Update records in one table based on related data in another table):
 UPDATE employees e JOIN departments d ON e.department_id = d.department_id SET e.salary = e.salary * 1.1 WHERE d.location = 'New York';
 
-###########################WHERE KEYWORD###########################
-Filter Results:
-SELECT * FROM employees WHERE age > 30;
-
-WHERE with Multiple Conditions:
-SELECT * FROM employees WHERE age > 30 AND department = 'HR';
